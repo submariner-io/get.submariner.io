@@ -92,7 +92,7 @@ get_subctl() {
 install_subctl() {
   local bin=$1
   local bin_file
-  local destdir=~/.local/bin
+  local destdir=${DESTDIR:-~/.local/bin}
   local dest=${destdir}/subctl
 
   install -D "${bin}" "${dest}"
