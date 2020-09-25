@@ -43,6 +43,13 @@ download_command() {
 
 get=$(download_command)
 
+sanitized_version() {
+  case $1 in
+    rc|latest|devel|v*) echo $1;;
+    *) echo "v$1" ;;
+  esac
+}
+
 get_subctl_release_url() {
   local draft_filter="cat"
   local url
@@ -51,8 +58,9 @@ get_subctl_release_url() {
            draft_filter="grep \-rc"
            ;;
     latest) url=https://api.github.com/repos/submariner-io/submariner-operator/releases/latest ;;
-    devel) url=https://api.github.com/repos/submariner-io/submariner-operator/releases/tags/devel ;;
-    *) url=https://api.github.com/repos/submariner-io/submariner-operator/releases/tags/${VERSION} ;;
+    *) echo "https://github.com/submariner-io/submariner-operator/releases/download/${VERSION}/subctl-${VERSION}-${os}-${architecture}.tar.xz"
+       return
+       ;;
   esac
 
   ${get} "${url}" | grep "browser_download_url.*-${os}-${architecture}" | ${draft_filter} | head -n 1 | cut -d\" -f 4
@@ -101,7 +109,7 @@ install_subctl() {
   fi
 }
 
-VERSION="${VERSION:-latest}"
+VERSION=$(sanitized_version "${VERSION:-latest}")
 os=$(get_operating_system)
 architecture=$(get_architecture)
 url=$(get_subctl_release_url)
