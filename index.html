@@ -65,11 +65,15 @@ get_subctl_release_url() {
   local draft_filter="cat"
   local url
   case ${VERSION} in
-    rc) url=https://api.github.com/repos/submariner-io/submariner-operator/releases
+    rc) url=https://api.github.com/repos/submariner-io/releases/releases
            draft_filter="grep \-rc"
            ;;
-    latest) url=https://api.github.com/repos/submariner-io/submariner-operator/releases/latest ;;
-    *) echo "https://github.com/submariner-io/submariner-operator/releases/download/${VERSION}/subctl-${VERSION}-${os}-${architecture}.tar.xz"
+    latest) url=https://api.github.com/repos/submariner-io/releases/releases/latest ;;
+    devel|v0.[1234567].*)
+        echo "https://github.com/submariner-io/submariner-operator/releases/download/${VERSION}/subctl-${VERSION}-${os}-${architecture}.tar.xz"
+        return
+        ;;
+    *) echo "https://github.com/submariner-io/releases/releases/download/${VERSION}/subctl-${VERSION}-${os}-${architecture}.tar.xz"
        return
        ;;
   esac
