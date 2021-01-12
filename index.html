@@ -110,7 +110,9 @@ install_subctl() {
   local destdir=${DESTDIR:-~/.local/bin}
   local dest=${destdir}/subctl
 
-  install -D "${bin}" "${dest}"
+  mkdir -p "$destdir"
+  cp -f "${bin}" "${dest}"
+  chmod +x "${dest}"
 
   bin_file=$(basename "${bin}")
   echo "${bin_file} has been installed as ${dest}"
