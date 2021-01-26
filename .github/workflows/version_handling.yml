@@ -35,4 +35,4 @@ jobs:
       - name: Check we got the right version (devel)
         if: matrix.version == 'devel'
         run: |
-          [[ "$(~/.local/bin/subctl version)" =~ ^"subctl version: v"[0-9.]+-[0-9]+-g[a-f0-9]+$ ]]
+          [[ "$(~/.local/bin/subctl version)" =~ ^"subctl version: subctl-devel-"[0-9]+-g[a-f0-9]+$ ]]
