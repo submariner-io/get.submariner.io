@@ -14,7 +14,7 @@ jobs:
         version: ['v0.5.0', 'v0.6.0', 'v0.7.0', 'v0.8.0', 'rc', 'latest', 'devel', 'release-0.8']
     steps:
       - name: Check out the repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@5a4ac9002d0be2fb38bd78e4b4dbde5606d7042f
 
       - name: Download and install subctl
         run: VERSION="${{ matrix.version }}" ./getsubctl.sh
