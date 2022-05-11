@@ -69,8 +69,12 @@ get_subctl_release_url() {
            draft_filter="grep \-rc"
            ;;
     latest) url=https://api.github.com/repos/submariner-io/releases/releases/latest ;;
-    devel|release*|feature*)
+    feature-multi-active-gw|release-0.?|release-0.1[012])
         echo "https://github.com/submariner-io/submariner-operator/releases/download/subctl-${VERSION}/subctl-${VERSION}-${os}-${architecture}.tar.xz"
+        return
+        ;;
+    devel|release*|feature*)
+        echo "https://github.com/submariner-io/subctl/releases/download/subctl-${VERSION}/subctl-${VERSION}-${os}-${architecture}.tar.xz"
         return
         ;;
     v0.[1234567].*)
