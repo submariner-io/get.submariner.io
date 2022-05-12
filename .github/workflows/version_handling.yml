@@ -11,7 +11,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        version: ['v0.5.0', 'v0.6.0', 'v0.7.0', 'v0.8.0', 'rc', 'latest', 'devel', 'release-0.8']
+        version: ['v0.7.0', 'v0.8.0', 'v0.12.0', 'rc', 'latest', 'devel', 'release-0.8', 'release-0.12']
     steps:
       - name: Check out the repository
         uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b
@@ -35,4 +35,4 @@ jobs:
       - name: Check we got the right version (devel/release)
         if: matrix.version == 'devel' || startsWith(matrix.version, 'release')
         run: |
-          [[ "$(~/.local/bin/subctl version)" =~ ^"subctl version: subctl-${{ matrix.version }}"(-[0-9]+-g[a-f0-9]+)?$ ]]
+          [[ "$(~/.local/bin/subctl version)" =~ ^"subctl version: "([a-z]+-)?${{ matrix.version }}(-[0-9]+-g[a-f0-9]+)?$ ]]
