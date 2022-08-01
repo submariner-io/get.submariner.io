@@ -98,6 +98,16 @@ get_subctl() {
 
   cd "${tmpdir}"
 
+  # Retry downloading several times, as the underlying $get command might not support the retries we need.
+  for i in {1..5}; do
+    echo "Download attempt #${i}..."
+    download_and_install && return 0
+    [ "$i" != 5 ] && sleep "${backoff}"
+    backoff=$(bc <<< $backoff*1.5)
+  done
+}
+
+download_and_install() {
   case ${url} in
     *tar.xz)
       ${get} "${url}" | tar xfJ -
@@ -142,6 +152,7 @@ VERSION=$(sanitized_version "${VERSION:-latest}")
 os=$(get_operating_system)
 architecture=$(get_architecture)
 url=$(get_subctl_release_url)
+backoff=1
 
 echo "Installing subctl version $VERSION"
 echo "  OS detected:           ${os}"
