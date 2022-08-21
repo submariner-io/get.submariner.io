@@ -101,18 +101,18 @@ get_subctl() {
   # Retry downloading several times, as the underlying $get command might not support the retries we need.
   for i in {1..5}; do
     echo "Download attempt #${i}..."
-    download_and_install || {
-      [ "$i" == 5 ] && exit 1
-      sleep "${backoff}"
-      backoff=$(bc <<< $backoff*1.5)
-    }
+    download_and_install && return 0
+
+    [ "$i" == 5 ] && exit 1
+    sleep "${backoff}"
+    backoff=$(bc <<< $backoff*1.5)
   done
 }
 
 download_and_install() {
   case ${url} in
     *tar.xz)
-      ${get} "${url}" | tar xfJ -
+      ${get} "${url}" | tar xfJ - || return 1
       # shellcheck disable=SC2086
       install_subctl subctl*/subctl*${os}-${architecture}*
       ;;
