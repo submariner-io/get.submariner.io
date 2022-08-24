@@ -4,6 +4,8 @@ name: Version-handling check
 on:
   pull_request:
 
+permissions: {}
+
 jobs:
   versions:
     name: Versions
