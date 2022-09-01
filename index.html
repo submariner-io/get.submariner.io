@@ -10,7 +10,7 @@
 #-->     <li> <a href="https://submariner.io/community/getting-help/">References to Submariner's Slack channel and other means to get community support</a> </li><!--
 #--> </ul></p> <!--
 #--> <h2>Source code:</h2> <pre>
-set -e
+set -e -o pipefail
 
 get_operating_system() {
   case $(uname -s) in
@@ -102,7 +102,9 @@ get_subctl() {
   for i in {1..5}; do
     echo "Download attempt #${i}..."
     download_and_install && return 0
-    [ "$i" != 5 ] && sleep "${backoff}"
+
+    [ "$i" == 5 ] && exit 1
+    sleep "${backoff}"
     backoff=$(bc <<< $backoff*1.5)
   done
 }
@@ -110,7 +112,7 @@ get_subctl() {
 download_and_install() {
   case ${url} in
     *tar.xz)
-      ${get} "${url}" | tar xfJ -
+      ${get} "${url}" | tar xfJ - || return 1
       # shellcheck disable=SC2086
       install_subctl subctl*/subctl*${os}-${architecture}*
       ;;
