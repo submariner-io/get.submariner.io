@@ -56,7 +56,7 @@ get=$(download_command)
 
 sanitized_version() {
   case $1 in
-    rc|latest|devel|release*|feature*|v*) echo $1;;
+    rc|latest|tip-latest-release|devel|release*|feature*|v*) echo $1;;
     *) echo "v$1" ;;
   esac
 }
@@ -69,6 +69,7 @@ get_subctl_release_url() {
            draft_filter="grep \-rc"
            ;;
     latest) url=https://api.github.com/repos/submariner-io/releases/releases/latest ;;
+    tip-latest-release) url=https://api.github.com/repos/submariner-io/subctl/releases ;;
     feature-multi-active-gw|release-0.?|release-0.1[012])
         echo "https://github.com/submariner-io/submariner-operator/releases/download/subctl-${VERSION}/subctl-${VERSION}-${os}-${architecture}.tar.xz"
         return
