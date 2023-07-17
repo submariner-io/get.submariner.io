@@ -115,7 +115,7 @@ download_and_install() {
     *tar.xz)
       ${get} "${url}" | tar xfJ - || return 1
       # shellcheck disable=SC2086
-      install_subctl subctl*/subctl*${os}-${architecture}*
+      install_subctl subctl*/subctl*
       ;;
     *) # non tar.xz releases (older)
       filename=$(basename "${url}")
