@@ -67,7 +67,7 @@ get_subctl_release_url() {
   local url
   case ${VERSION} in
     rc) url=https://api.github.com/repos/submariner-io/releases/releases
-           draft_filter="grep \-rc"
+           draft_filter="grep \-rc.*xz"
            ;;
     latest) url=https://api.github.com/repos/submariner-io/releases/releases/latest ;;
     feature-multi-active-gw|release-0.?|release-0.1[012])
@@ -112,6 +112,11 @@ get_subctl() {
 
 download_and_install() {
   case ${url} in
+    *tar.gz)
+      ${get} "${url}" | tar xfz - || return 1
+      # shellcheck disable=SC2086
+      install_subctl subctl*/subctl*
+      ;;
     *tar.xz)
       ${get} "${url}" | tar xfJ - || return 1
       # shellcheck disable=SC2086
