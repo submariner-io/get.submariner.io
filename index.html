@@ -31,9 +31,10 @@ get_architecture() {
     x86_64) echo "amd64" ;;
     amd64) echo "amd64" ;;
     arm64) echo "arm64" ;;
+    aarch64) echo "arm64" ;;
     i?86) echo "386" ;;
     *)
-    error "This installer only supports x86_64, i386, amd64 and arm64 architectures. Found $(uname -m)"
+    error "This installer only supports x86_64, i386, amd64, arm64, and aarch64 architectures. Found $(uname -m)"
     return 1;;
   esac
 }
